@@ -1,6 +1,10 @@
 FROM python:3.9.6-alpine
 
-WORKDIR /usr/src/app
+ENV APP_HOME=/usr/src/app
+RUN mkdir $APP_HOME
+RUN mkdir -p $APP_HOME/staticfiles
+
+WORKDIR $APP_HOME
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

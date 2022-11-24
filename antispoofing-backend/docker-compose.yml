@@ -6,6 +6,7 @@ services:
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./app/:/usr/src/app/
+      - static_volume:/usr/src/app/staticfiles
     expose:
       - 8000
     depends_on:
@@ -20,6 +21,8 @@ services:
       - POSTGRES_DB=antispoofing
   nginx:
     build: ./nginx
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
     ports:
       - 1337:80
     depends_on:
@@ -27,3 +30,4 @@ services:
 
 volumes:
   postgres_data:
+  static_volume:

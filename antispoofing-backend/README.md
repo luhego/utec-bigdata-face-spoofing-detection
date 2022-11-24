@@ -17,3 +17,9 @@ docker-compose up -d
 ```
 docker-compose exec web python manage.py migrate --noinput
 ```
+
+- Collect archivos estaticos
+
+```
+docker-compose exec web python manage.py collectstatic --no-input --clear
+```
