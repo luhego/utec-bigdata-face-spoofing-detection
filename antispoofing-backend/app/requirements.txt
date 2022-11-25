@@ -4,3 +4,6 @@ markdown
 django-filter
 psycopg2-binary
 gunicorn
+django-storages
+django-environ
+boto3
