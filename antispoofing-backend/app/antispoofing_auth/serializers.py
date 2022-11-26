@@ -36,8 +36,9 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=64)
-    password = serializers.CharField(max_length=128)
+    username = serializers.CharField(max_length=64, required=True)
+    password = serializers.CharField(max_length=128, required=True)
+    video = serializers.FileField(max_length=100, required=True)
 
     def validate(self, data):
         username = data.get("username")

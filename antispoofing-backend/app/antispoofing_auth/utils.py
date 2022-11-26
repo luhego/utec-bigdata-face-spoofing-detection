@@ -1,6 +1,8 @@
 import secrets
 from django.contrib.auth import get_user_model, password_validation
 
+from .models import LoginAttempt
+
 User = get_user_model()
 
 
@@ -15,6 +17,16 @@ def create_user_account(username, email, password, **extra_fields):
         genre=genre,
         video=video,
         video_hex_code=video_hex_code,
+    )
+    return user
+
+
+def register_login_attempt(**extra_fields):
+    user = extra_fields.pop("user", None)
+    video = extra_fields.pop("video", None)
+    video, video_hex_code = process_video(video)
+    LoginAttempt.objects.create(
+        user=user, success=True, video=video, video_hex_code=video_hex_code
     )
     return user
 
