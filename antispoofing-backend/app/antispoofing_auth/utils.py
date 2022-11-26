@@ -9,7 +9,7 @@ from .kafka_producer import KafkaProducer
 User = get_user_model()
 
 
-kafka_producer = KafkaProducer("loginattempts")
+kafka_producer = KafkaProducer("loginattempt")
 
 
 def create_user_account(username, email, password, **extra_fields):

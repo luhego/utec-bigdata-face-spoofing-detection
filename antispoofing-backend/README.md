@@ -31,8 +31,8 @@ docker-compose exec web python manage.py collectstatic --no-input --clear
 - Para crear los topics:
 
 ```
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:9092 --create --topic loginattempt
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:9092 --create --topic filtered
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:9092 --create --topic checked
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:9092 --create --topic celery
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic loginattempt
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic filtered
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic checked
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic celery
 ```
