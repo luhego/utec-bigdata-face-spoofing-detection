@@ -7,3 +7,4 @@ gunicorn
 django-storages
 django-environ
 boto3
+confluent-kafka

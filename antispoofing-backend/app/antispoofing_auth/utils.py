@@ -1,9 +1,15 @@
 import secrets
-from django.contrib.auth import get_user_model, password_validation
+import json
+
+from django.contrib.auth import get_user_model
 
 from .models import LoginAttempt
+from .kafka_producer import KafkaProducer
 
 User = get_user_model()
+
+
+kafka_producer = KafkaProducer("loginattempts")
 
 
 def create_user_account(username, email, password, **extra_fields):
@@ -18,6 +24,13 @@ def create_user_account(username, email, password, **extra_fields):
         video=video,
         video_hex_code=video_hex_code,
     )
+
+    kafka_producer.produce(
+        json.dumps(
+            {"username": username, "first_video": video_hex_code, "any_video": ""}
+        )
+    )
+
     return user
 
 
@@ -28,6 +41,13 @@ def register_login_attempt(**extra_fields):
     LoginAttempt.objects.create(
         user=user, success=True, video=video, video_hex_code=video_hex_code
     )
+
+    kafka_producer.produce(
+        json.dumps(
+            {"username": user.username, "first_video": "", "any_video": video_hex_code}
+        )
+    )
+
     return user
 
 
