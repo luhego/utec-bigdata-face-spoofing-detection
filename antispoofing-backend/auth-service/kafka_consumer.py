@@ -3,9 +3,9 @@ import time
 
 from confluent_kafka import Consumer, TopicPartition
 
-from fake_detector import StreamingFakeDetector
+from authenticator import Authenticator
 
-LOGIN_ATTEMPT_TOPIC = "loginattempt"
+FILTERED_TOPIC = "filtered"
 
 
 class KafkaConsumer:
@@ -25,7 +25,7 @@ class KafkaConsumer:
         self.topic = topic
         self.consumer.subscribe([self.topic])
 
-        streaming_fake_detector = StreamingFakeDetector()
+        authenticator = Authenticator()
 
         try:
 
@@ -45,7 +45,7 @@ class KafkaConsumer:
 
                 print(f"Received message: {event}")
 
-                streaming_fake_detector.detect(event)
+                authenticator.authenticate(event)
 
                 self.consumer.commit(
                     offsets=[
@@ -65,4 +65,4 @@ class KafkaConsumer:
 
 
 kafka_consumer = KafkaConsumer()
-kafka_consumer.consume(LOGIN_ATTEMPT_TOPIC)
+kafka_consumer.consume(FILTERED_TOPIC)

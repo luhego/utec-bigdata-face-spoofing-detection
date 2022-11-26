@@ -36,6 +36,12 @@ services:
       - ./streaming-fake-detector/:/usr/src/app/
     command: python kafka_consumer.py
 
+  auth-service:
+    build: ./auth-service
+    volumes:
+      - ./auth-service/:/usr/src/app/
+    command: python kafka_consumer.py
+
   zoo1:
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zoo1
