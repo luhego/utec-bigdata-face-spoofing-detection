@@ -26,9 +26,7 @@ def create_user_account(username, email, password, **extra_fields):
     )
 
     kafka_producer.produce(
-        json.dumps(
-            {"username": username, "first_video": video_hex_code, "any_video": ""}
-        )
+        json.dumps({"username": username, "first_video": video.name, "any_video": ""})
     )
 
     return user
@@ -44,7 +42,11 @@ def register_login_attempt(**extra_fields):
 
     kafka_producer.produce(
         json.dumps(
-            {"username": user.username, "first_video": "", "any_video": video_hex_code}
+            {
+                "username": user.username,
+                "first_video": user.video.name,
+                "any_video": video.name,
+            }
         )
     )
 

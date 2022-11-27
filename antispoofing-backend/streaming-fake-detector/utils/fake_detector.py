@@ -1,4 +1,3 @@
-import random
 import json
 
 SUCCESS_TOPIC = "filtered"
@@ -21,11 +20,11 @@ class StreamingFakeDetector:
             print(
                 f"Real video. Producing message to Kafka. Topic: {SUCCESS_TOPIC}. Message: {event}"
             )
-            # kakfa_producer = KafkaProducer(SUCCESS_TOPIC)
-            # kakfa_producer.produce(json.dumps(event))
+            kakfa_producer = KafkaProducer(SUCCESS_TOPIC)
+            kakfa_producer.produce(json.dumps(event))
         else:
             print(
                 f"Fake video. Producing message to Kafka. Topic: {FAILURE_TOPIC}. Message: {event}"
             )
-            # kakfa_producer = KafkaProducer(FAILURE_TOPIC)
-            # kakfa_producer.produce(json.dumps(event))
+            kakfa_producer = KafkaProducer(FAILURE_TOPIC)
+            kakfa_producer.produce(json.dumps(event))

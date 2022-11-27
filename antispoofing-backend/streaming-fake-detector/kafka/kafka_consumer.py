@@ -3,62 +3,62 @@ import time
 
 from confluent_kafka import Consumer, TopicPartition
 
-from fake_detector import StreamingFakeDetector
+from utils.fake_detector import StreamingFakeDetector
 
-# LOGIN_ATTEMPT_TOPIC = "loginattempt"
+LOGIN_ATTEMPT_TOPIC = "loginattempt"
 
 
-# class KafkaConsumer:
-#     def __init__(self) -> None:
-#         self.conf = {
-#             "bootstrap.servers": "kafka1:19092, kafka2:19093, kafka3:19094",
-#             "group.id": "test1",
-#             "enable.auto.commit": "false",
-#             "auto.offset.reset": "earliest",
-#             "max.poll.interval.ms": "500000",
-#             "session.timeout.ms": "120000",
-#             "request.timeout.ms": "120000",
-#         }
+class KafkaConsumer:
+    def __init__(self) -> None:
+        self.conf = {
+            "bootstrap.servers": "kafka1:19092, kafka2:19093, kafka3:19094",
+            "group.id": "test1",
+            "enable.auto.commit": "false",
+            "auto.offset.reset": "earliest",
+            "max.poll.interval.ms": "500000",
+            "session.timeout.ms": "120000",
+            "request.timeout.ms": "120000",
+        }
 
-#     def consume(self, topic):
-#         self.consumer = Consumer(self.conf)
-#         self.topic = topic
-#         self.consumer.subscribe([self.topic])
+    def consume(self, topic):
+        self.consumer = Consumer(self.conf)
+        self.topic = topic
+        self.consumer.subscribe([self.topic])
 
-#         streaming_fake_detector = StreamingFakeDetector()
+        streaming_fake_detector = StreamingFakeDetector()
 
-#         try:
+        try:
 
-#             while True:
-#                 print(f"Consuming messages from Kafka topic: {self.topic}")
-#                 msg = self.consumer.poll(1.0)
-#                 if msg is None:
-#                     continue
+            while True:
+                print(f"Consuming messages from Kafka topic: {self.topic}")
+                msg = self.consumer.poll(1.0)
+                if msg is None:
+                    continue
 
-#                 if msg.error():
-#                     print("Consumer error: {}".format(msg.error()))
-#                     continue
+                if msg.error():
+                    print("Consumer error: {}".format(msg.error()))
+                    continue
 
-#                 event = json.loads(msg.value().decode("utf-8"))
-#                 partition = msg.partition()
-#                 offset = msg.offset()
+                event = json.loads(msg.value().decode("utf-8"))
+                partition = msg.partition()
+                offset = msg.offset()
 
-#                 print(f"Received message: {event}")
+                print(f"Received message: {event}")
 
-#                 streaming_fake_detector.detect(event)
+                streaming_fake_detector.detect(event)
 
-#                 self.consumer.commit(
-#                     offsets=[
-#                         TopicPartition(
-#                             self.topic, partition=partition, offset=offset + 1
-#                         )
-#                     ],
-#                     asynchronous=False,
-#                 )
+                self.consumer.commit(
+                    offsets=[
+                        TopicPartition(
+                            self.topic, partition=partition, offset=offset + 1
+                        )
+                    ],
+                    asynchronous=False,
+                )
 
-#                 time.sleep(2)
+                time.sleep(2)
 
-#         except Exception as e:
-#             print(f"Exception: {e}")
+        except Exception as e:
+            print(f"Exception: {e}")
 
-#         self.consumer.close()
+        self.consumer.close()
