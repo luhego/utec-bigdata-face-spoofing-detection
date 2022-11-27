@@ -1,1 +1,7 @@
 confluent-kafka
+boto3
+numpy
+django-environ
+opencv-python-headless
+torch
+torchvision

@@ -34,7 +34,7 @@ services:
     build: ./streaming-fake-detector
     volumes:
       - ./streaming-fake-detector/:/usr/src/app/
-    command: python kafka_consumer.py
+    command: python start.py
 
   auth-service:
     build: ./auth-service

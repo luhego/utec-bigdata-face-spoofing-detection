@@ -260,3 +260,6 @@ poetry.toml
 # End of https://www.toptal.com/developers/gitignore/api/python,django
 
 .env
+*.mov
+*.avi
+*.mp4
