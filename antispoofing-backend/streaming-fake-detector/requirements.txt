@@ -5,3 +5,4 @@ django-environ
 opencv-python-headless
 torch
 torchvision
+ffmpeg-python

@@ -1,4 +1,5 @@
 from .video_downloader import VideoDownloader
+from .video_transformer import VideoTransformer
 from .video_preprocessor import VideoPreprocessor
 from .video_loader import VideoLoader
 from .video_predictor import VideoPredictor
@@ -8,6 +9,7 @@ class VideoPipeline:
     def __init__(self) -> None:
         self.processors = [
             VideoDownloader(),
+            VideoTransformer(),
             VideoPreprocessor(),
             VideoLoader(),
             VideoPredictor(),

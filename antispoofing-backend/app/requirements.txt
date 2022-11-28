@@ -8,3 +8,4 @@ django-storages
 django-environ
 boto3
 confluent-kafka
+django-cors-headers

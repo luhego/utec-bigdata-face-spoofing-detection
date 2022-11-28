@@ -6,8 +6,6 @@ User = get_user_model()
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
-    video_hex_code = serializers.CharField(max_length=64, required=False)
-
     class Meta:
         model = User
         fields = (
@@ -16,8 +14,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
             "email",
             "password",
             "genre",
-            "video",
-            "video_hex_code",
+            "video_s3_url",
         )
 
     def validate_username(self, value):
@@ -38,7 +35,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=64, required=True)
     password = serializers.CharField(max_length=128, required=True)
-    video = serializers.FileField(max_length=100, required=True)
+    video_s3_url = serializers.CharField(max_length=100, required=True)
 
     def validate(self, data):
         username = data.get("username")

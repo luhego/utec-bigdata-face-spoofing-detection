@@ -263,3 +263,6 @@ poetry.toml
 *.mov
 *.avi
 *.mp4
+*.webm
+
+.DS_Store

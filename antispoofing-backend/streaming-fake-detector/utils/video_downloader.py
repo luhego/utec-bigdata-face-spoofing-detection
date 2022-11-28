@@ -18,6 +18,7 @@ s3 = boto3.client(
 class VideoDownloader:
     def process(self, video):
         print(f"Downloading video: {video}")
+        video = video.split("/")[-1]
         video_path = f"{FOLDER_NAME}/{video}"
         s3.download_file(BUCKET_NAME, video, video_path)
         return video_path

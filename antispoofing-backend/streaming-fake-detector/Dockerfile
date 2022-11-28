@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
-RUN apt update && apt install --no-install-recommends -y build-essential musl-dev git gcc g++ bash make python3-dev
+RUN apt update && apt install --no-install-recommends -y build-essential musl-dev git gcc g++ bash make python3-dev ffmpeg
 
 # required to install confluent-kafka in Mac M1
 RUN cd /tmp && git clone https://github.com/edenhill/librdkafka.git && \

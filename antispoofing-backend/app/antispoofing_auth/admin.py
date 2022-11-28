@@ -4,11 +4,11 @@ from .models import CustomUser, LoginAttempt
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ("username", "email", "genre", "video_hex_code")
+    list_display = ("username", "email", "genre", "video_s3_url")
 
 
 class LoginAttemptAdmin(admin.ModelAdmin):
-    list_display = ("user", "success", "timestamp", "video_hex_code")
+    list_display = ("user", "success", "timestamp", "video_s3_url")
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
