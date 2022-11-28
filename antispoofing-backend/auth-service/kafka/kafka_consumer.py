@@ -3,7 +3,7 @@ import time
 
 from confluent_kafka import Consumer, TopicPartition
 
-from authenticator import Authenticator
+from utils.authenticator import Authenticator
 
 FILTERED_TOPIC = "filtered"
 
@@ -62,7 +62,3 @@ class KafkaConsumer:
             print(f"Exception: {e}")
 
         self.consumer.close()
-
-
-kafka_consumer = KafkaConsumer()
-kafka_consumer.consume(FILTERED_TOPIC)

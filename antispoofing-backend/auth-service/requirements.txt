@@ -1,1 +1,6 @@
 confluent-kafka
+opencv-python-headless
+django-environ
+boto3
+dlib
+face-recognition
