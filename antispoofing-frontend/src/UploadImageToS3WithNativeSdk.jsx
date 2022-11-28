@@ -1,23 +1,23 @@
-import React ,{useState} from 'react';
+import React, { useState } from 'react';
 import AWS from 'aws-sdk'
 
-const S3_BUCKET ='utecbigdatamyawsbucketlt';
-const REGION ='us-east-1';
+const S3_BUCKET = process.env.REACT_APP_AWS_STORAGE_BUCKET_NAME;
+const REGION = process.env.REACT_APP_AWS_S3_REGION_NAME;
 
 
 AWS.config.update({
-    accessKeyId: 'AKIAT6XGPKGGANONN7SM',
-    secretAccessKey: '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'
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
 })
 
 const myBucket = new AWS.S3({
-    params: { Bucket: S3_BUCKET},
+    params: { Bucket: S3_BUCKET },
     region: REGION,
 })
 
 const UploadImageToS3WithNativeSdk = () => {
 
-    const [progress , setProgress] = useState(0);
+    const [progress, setProgress] = useState(0);
     const [selectedFile, setSelectedFile] = useState(null);
 
     const handleFileInput = (e) => {
@@ -45,7 +45,7 @@ const UploadImageToS3WithNativeSdk = () => {
 
     return <div>
         <div>Native SDK File Upload Progress is {progress}%</div>
-        <input type="file" onChange={handleFileInput}/>
+        <input type="file" onChange={handleFileInput} />
         <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button>
     </div>
 }

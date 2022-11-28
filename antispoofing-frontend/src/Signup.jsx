@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import './Signup.css';
 import logo from './logo_UTEC.svg';
 import Webcam from "react-webcam";
+import AWS from 'aws-sdk'
+
+const S3_BUCKET = process.env.REACT_APP_AWS_STORAGE_BUCKET_NAME;
+const REGION = process.env.REACT_APP_AWS_S3_REGION_NAME;
+
+
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
+})
+
+const bucket = new AWS.S3({
+  params: { Bucket: S3_BUCKET },
+  region: REGION,
+})
 
 // Funcion principal SignUP
 export const Signup = (props) => {
@@ -20,23 +35,67 @@ export const Signup = (props) => {
   const [capturing, setCapturing] = React.useState(false);
   const [recordedChunks, setRecordedChunks] = React.useState([]);
 
+  const updateVideo = async () => {
+    console.log("Setting video")
+    console.log(recordedChunks)
+    if (recordedChunks.length) {
+      const blob = new Blob(recordedChunks, {
+        type: "video/webm"
+      });
+
+      setVideo(blob);
+    } else {
+      console.log("No video recorded")
+    }
+  }
+
+  useEffect(() => {
+    if (video !== "") {
+      // Generate hexadecimal code for video
+      const videoHexCode = Array.from(crypto.getRandomValues(new Uint8Array(32)))
+        .map(b => b.toString(16).padStart(2, '0')).join('');
+      const filename = `${videoHexCode}.webm`;
+      const params = {
+        Body: video,
+        Bucket: S3_BUCKET,
+        Key: filename
+      };
+
+      const videoURL = `s3://${S3_BUCKET}/${filename}`
+
+      // Upload video to S3
+      bucket.putObject(params).promise().then((d) => {
+        console.log(d)
+
+        const data = {
+          username: username,
+          email: email,
+          genre: genre,
+          password: password,
+          video_s3_url: videoURL,
+        }
+
+        fetch("http://localhost:1337/api/auth/signup", {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        })
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }, [video]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("username", username);
-    formData.append("password", password)
-    formData.append("genre", genre);
-    formData.append("video", video);
-
-    fetch("http://localhost:1337/api/auth/signup", {
-      method: "POST",
-      body: formData
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    updateVideo();
   }
 
   //Boton de Start, Stop, Download de la cámara 
@@ -65,7 +124,6 @@ export const Signup = (props) => {
   const handleStopCaptureClick = React.useCallback(() => {
     mediaRecorderRef.current.stop();
     setCapturing(false);
-
   }, [recordedChunks, mediaRecorderRef, webcamRef, setCapturing]);
 
 
